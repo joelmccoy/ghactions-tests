@@ -1,0 +1,24 @@
+name: On PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check paths
+        uses: dorny-path-filter@v3
+        with:
+          filters: |
+            tasks:
+              - 'tasks/*'
+      - name: echo result
+        run: echo ${{ steps.changes.outputs.tasks }}
